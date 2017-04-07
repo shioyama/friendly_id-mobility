@@ -19,6 +19,18 @@ Or install it yourself as:
 
     $ gem install friendly_id-mobility
 
+Run the Mobility generator and migrate:
+
+    $ rails generate mobility:install
+    $ rake db:migrate
+
+Run the FriendlyId generator, without the migration to generate the slugs
+table:
+
+    $ rails generate friendly_id --skip-migration
+
+You're ready to go!
+
 ## Translating Slugs using Mobility
 
 To translate slugs using Mobility, simply translate the attribute you want to
@@ -28,7 +40,7 @@ call `friendly_id` with `use: :mobility`:
 ```ruby
 class Post < ActiveRecord::Base
   include Mobility
-  translates :title, :slug
+  translates :title, :slug, type: :string
 
   extend FriendlyId
   friendly_id :title, use: :mobility
