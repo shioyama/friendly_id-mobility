@@ -26,6 +26,17 @@ module FriendlyId
             "Mobility (add 'translates :#{field}' in your model '#{model.name}')"
         end
       end
+      private :advise_against_untranslated_model
+    end
+
+    def set_friendly_id(text, locale = nil)
+      ::Mobility.with_locale(locale || ::Mobility.locale) do
+        set_slug normalize_friendly_id(text)
+      end
+    end
+
+    def should_generate_new_friendly_id?
+      send(friendly_id_config.slug_column).nil?
     end
   end
 end
