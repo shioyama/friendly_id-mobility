@@ -111,12 +111,12 @@ describe FriendlyId::Mobility do
     describe "#friendly_id" do
       it "sets friendly_id from base column in each locale" do
         article = Article.create!(:title => "War and Peace")
-        I18n.with_locale(:es) { article.title = "Guerra y paz" }
+        I18n.with_locale(:'es-MX') { article.title = "Guerra y paz" }
         article.save!
         article = Article.first
 
         aggregate_failures do
-          I18n.with_locale(:es) { expect(article.friendly_id).to eq("guerra-y-paz") }
+          I18n.with_locale(:'es-MX') { expect(article.friendly_id).to eq("guerra-y-paz") }
           I18n.with_locale(:en) { expect(article.friendly_id).to eq("war-and-peace") }
         end
       end
