@@ -4,6 +4,9 @@ FriendlyId Mobility
 [![Gem Version](https://badge.fury.io/rb/friendly_id-mobility.svg)][gem]
 [![Build Status](https://travis-ci.org/shioyama/friendly_id-mobility.svg?branch=master)][travis]
 
+[gem]: https://rubygems.org/gems/friendly_id-mobility
+[travis]: https://travis-ci.org/shioyama/friendly_id-mobility
+
 [Mobility](https://github.com/shioyama/mobility) support for
 [FriendlyId](https://github.com/norman/friendly_id).
 
