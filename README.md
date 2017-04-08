@@ -39,13 +39,13 @@ rails generate friendly_id --skip-migration
 
 You're ready to go!
 
-## Translating Slugs using Mobility
+## Usage
 
 There are two ways to translate FriendlyId slugs with Mobility: with an
 untranslated base column (like the SimpleI18n module included with FriendlyId),
 and with a translated base column.
 
-### Only Translate Slug
+### Translating Slug
 
 If you only want to translate the slug, include `Mobility` and translate the
 slug with whichever backend you want (here we're assuming the default KeyValue
@@ -77,7 +77,7 @@ I18n.with_locale(:es) { journalist.friendly_id }
 
 So the slug is translated, but the base attribute (`name`) is not.
 
-### Translate Slug and Base Attribute
+### Translating Slug and Base Attribute
 
 You can also translate both slug and base attribute:
 
@@ -114,9 +114,11 @@ Setting `dirty: true` on the translated base attribute is recommended in order
 to ensure that changes in any locale trigger updates to the slug in that
 locale.
 
-### Finders
+### Friendly Finders with Translated Attributes
 
-Finders work with translated attributes:
+The Mobility `i18n` scope is mixed into the `friendly` scope for models which
+`use: mobility`, so you can find translated slugs just like you would an
+untranslated one:
 
 ```ruby
 Mobility.locale = :en
