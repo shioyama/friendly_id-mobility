@@ -13,73 +13,119 @@ gem 'friendly_id-mobility'
 
 And then execute:
 
-    $ bundle
+```
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install friendly_id-mobility
+```
+gem install friendly_id-mobility
+```
 
 Run the Mobility generator and migrate:
 
-    $ rails generate mobility:install
-    $ rake db:migrate
+```
+rails generate mobility:install
+rake db:migrate
+```
 
 Run the FriendlyId generator, without the migration to generate the slugs
 table:
 
-    $ rails generate friendly_id --skip-migration
+```
+rails generate friendly_id --skip-migration
+```
 
 You're ready to go!
 
 ## Translating Slugs using Mobility
 
-To translate slugs using Mobility, simply translate the attribute you want to
-use to generate slugs and also translate the slug attribute itself, and then
-call `friendly_id` with `use: :mobility`:
+There are two ways to translate FriendlyId slugs with Mobility: with an
+untranslated base column (like the SimpleI18n module included with FriendlyId),
+and with a translated base column.
+
+### Only Translate Slug
+
+If you only want to translate the slug, include `Mobility` and translate the
+slug with whichever backend you want (here we're assuming the default KeyValue
+backend). Here, `name` is untranslated (so there is a column on the `posts`
+table named `name`):
 
 ```ruby
-class Post < ActiveRecord::Base
+class Journalist < ActiveRecord::Base
   include Mobility
-  translates :title, :slug, type: :string
+  translates :slug
 
   extend FriendlyId
   friendly_id :title, use: :mobility
 end
 ```
 
-You can now save `title` in any locale and FriendlyId will generate a
-slug, stored by Mobility in the current locale:
+You can now save `name` and generate a slug, and update the slug in any locale
+using `set_friendly_id`
 
 ```ruby
-post = Post.create(title: "My Foo Title")
-post.title
+journalist = Journalist.create(name: "John Smith")
+journalist.slug
+#=> "john-smith"
+journalist.set_friendly_id("Juan Fulano", :es)
+journalist.save!
+I18n.with_locale(:es) { journalist.friendly_id }
+#=> "juan-fulano"
+```
+
+So the slug is translated, but the base attribute (`name`) is not.
+
+### Translate Slug and Base Attribute
+
+You can also translate both slug and base attribute:
+
+```ruby
+class Article < ActiveRecord::Base
+  include Mobility
+  translates :slug, :title, dirty: true
+
+  extend FriendlyId
+  friendly_id :title, use: :mobility
+end
+```
+
+In this case, `title` is translated, and its value in the current locale will
+be used to generate the slug in this locale:
+
+```ruby
+article = Article.create(title: "My Foo Title")
+article.title
 #=> "My Foo Title"
-post.slug
+article.slug
 #=> "my-foo-title"
 Mobility.locale = :fr
-post.title = "Mon titre foo"
-post.save
-post.slug
+article.title = "Mon titre foo"
+article.save
+article.slug
 #=> "mon-titre-foo"
 Mobility.locale = :en
-post.slug
+article.slug
 #=> "my-foo-title"
 ```
 
-Finders work too:
+Setting `dirty: true` on the translated base attribute is recommended in order
+to ensure that changes in any locale trigger updates to the slug in that
+locale.
+
+### Finders
+
+Finders work with translated attributes:
 
 ```ruby
 Mobility.locale = :en
-Post.friendly.find("my-foo-title")
-#=> #<Post id: 1 ...>
+Article.friendly.find("my-foo-title")
+#=> #<Article id: 1 ...>
 Mobility.locale = :fr
-Post.friendly.find("mon-titre-foo")
-#=> #<Post id: 1 ...>
+Article.friendly.find("mon-titre-foo")
+#=> #<Article id: 1 ...>
 ```
-
-## Development
-
-(TODO)
 
 ## Contributing
 
@@ -88,7 +134,6 @@ https://github.com/shioyama/friendly_id-mobility. This project is intended to
 be a safe, welcoming space for collaboration, and contributors are expected to
 adhere to the [Contributor Covenant](http://contributor-covenant.org) code of
 conduct.
-
 
 ## License
 

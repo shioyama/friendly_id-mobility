@@ -19,6 +19,9 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration
       t.boolean :active
     end
 
+    create_table :articles do |t|
+    end
+
     create_table :mobility_string_translations do |t|
       t.string  :locale
       t.string  :key
@@ -44,13 +47,24 @@ class Journalist < ActiveRecord::Base
   translates :slug, type: :string, fallthrough_accessors: true, backend: :key_value
 
   extend FriendlyId
-  friendly_id :name, :use => :mobility
+  friendly_id :name, use: :mobility
+end
+
+class Article < ActiveRecord::Base
+  include Mobility
+  translates :slug, :title, type: :string, dirty: true, backend: :key_value
+
+  extend FriendlyId
+  friendly_id :title, use: :mobility
 end
 
 ActiveRecord::Migration.verbose = false
 FriendlyIdMobilityTest.up
 
 RSpec.configure do |config|
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
+
   config.before :each do
     DatabaseCleaner.start
     I18n.locale = :en
