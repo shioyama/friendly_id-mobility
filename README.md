@@ -7,7 +7,8 @@ FriendlyId Mobility
 [Mobility](https://github.com/shioyama/mobility) support for
 [FriendlyId](https://github.com/norman/friendly_id).
 
-## Installation
+Installation
+------------
 
 Add this line to your application's Gemfile:
 
@@ -43,7 +44,8 @@ rails generate friendly_id --skip-migration
 
 You're ready to go!
 
-## Usage
+Usage
+-----
 
 There are two ways to translate FriendlyId slugs with Mobility: with an
 untranslated base column (like the SimpleI18n module included with FriendlyId),
@@ -133,7 +135,8 @@ Article.friendly.find("mon-titre-foo")
 #=> #<Article id: 1 ...>
 ```
 
-## Contributing
+Contributing
+------------
 
 Bug reports and pull requests are welcome on GitHub at
 https://github.com/shioyama/friendly_id-mobility. This project is intended to
@@ -141,7 +144,8 @@ be a safe, welcoming space for collaboration, and contributors are expected to
 adhere to the [Contributor Covenant](http://contributor-covenant.org) code of
 conduct.
 
-## License
+License
+-------
 
 The gem is available as open source under the terms of the [MIT
 License](http://opensource.org/licenses/MIT).
