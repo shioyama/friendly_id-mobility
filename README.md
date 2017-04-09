@@ -126,7 +126,7 @@ locale.
 ### Friendly Finders with Translated Attributes
 
 The Mobility `i18n` scope is mixed into the `friendly` scope for models which
-`use: mobility`, so you can find translated slugs just like you would an
+`use: :mobility`, so you can find translated slugs just like you would an
 untranslated one:
 
 ```ruby
