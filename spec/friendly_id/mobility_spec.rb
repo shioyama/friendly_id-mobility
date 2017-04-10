@@ -184,7 +184,7 @@ describe FriendlyId::Mobility do
             post.title = "Foo Titre"
             post.save!
           end
-        }.to change(FriendlyId::Slug, :count).by(1)
+        }.to change(FriendlyId::Slug.unscoped, :count).by(1)
 
         slug = post.slugs.find { |slug| slug.locale == "fr" }
         expect(slug.slug).to eq("foo-titre")

@@ -65,14 +65,6 @@ module FriendlyId
         where(friendly_id_config.query_field => id).exists? ||
           joins(:slugs).where(slug_history_clause(id)).exists?
       end
-
-      private
-
-      def slug_history_clause(id)
-        Slug.arel_table[:sluggable_type].eq(base_class.to_s).
-          and(Slug.arel_table[:slug].eq(id)).
-          and(Slug.arel_table[:locale].eq(::Mobility.locale))
-      end
     end
   end
 end
