@@ -1,11 +1,17 @@
 require "friendly_id"
 require "friendly_id/mobility/version"
+require "friendly_id/slug_decorator"
 
 module FriendlyId
   module Mobility
     class << self
       def setup(model_class)
         model_class.friendly_id_config.use :slugged
+        if model_class.friendly_id_config.uses? :history
+          model_class.instance_eval do
+            friendly_id_config.finder_methods = FriendlyId::Mobility::FinderMethods
+          end
+        end
       end
 
       def included(model_class)
@@ -51,5 +57,22 @@ module FriendlyId
         end
       end
     end)
+
+    module FinderMethods
+      include ::FriendlyId::History::FinderMethods
+
+      def exists_by_friendly_id?(id)
+        where(friendly_id_config.query_field => id).exists? ||
+          joins(:slugs).where(slug_history_clause(id)).exists?
+      end
+
+      private
+
+      def slug_history_clause(id)
+        Slug.arel_table[:sluggable_type].eq(base_class.to_s).
+          and(Slug.arel_table[:slug].eq(id)).
+          and(Slug.arel_table[:locale].eq(::Mobility.locale))
+      end
+    end
   end
 end

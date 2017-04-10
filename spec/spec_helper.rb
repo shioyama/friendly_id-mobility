@@ -22,6 +22,10 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration
     create_table :articles do |t|
     end
 
+    create_table :posts do |t|
+      t.boolean :published
+    end
+
     create_table :mobility_string_translations do |t|
       t.string  :locale
       t.string  :key
@@ -38,6 +42,15 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration
       t.integer :translatable_id
       t.string  :translatable_type
       t.timestamps
+    end
+
+    create_table :friendly_id_slugs do |t|
+      t.string   :slug,                      null: false
+      t.integer  :sluggable_id,              null: false
+      t.string   :sluggable_type, limit: 50
+      t.string   :locale,                    null: false
+      t.string   :scope
+      t.datetime :created_at
     end
   end
 end
@@ -56,6 +69,15 @@ class Article < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :title, use: :mobility
+end
+
+class Post < ActiveRecord::Base
+  include Mobility
+  translates :slug, :title, type: :string, dirty: true, backend: :key_value
+  translates :content, type: :text, dirty: true, backend: :key_value
+
+  extend FriendlyId
+  friendly_id :title, use: [:history, :mobility]
 end
 
 ActiveRecord::Migration.verbose = false

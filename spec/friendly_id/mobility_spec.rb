@@ -122,4 +122,102 @@ describe FriendlyId::Mobility do
       end
     end
   end
+
+  describe "history" do
+    describe "base features" do
+      it "inserts record in slugs table on create" do
+        post = Post.create!(title: "foo title", content: "once upon a time...")
+        expect(post.slugs.any?).to eq(true)
+      end
+
+      it "does not create new slug record if friendly_id is not changed" do
+        post = Post.create(published: true)
+        post.published = false
+        post.save!
+        expect(FriendlyId::Slug.count).to eq(1)
+      end
+
+      it "creates new slug record when friendly_id changes" do
+        post = Post.create(title: "foo title")
+        post.title = post.title + " 2"
+        post.slug = nil
+        post.save!
+        expect(FriendlyId::Slug.count).to eq(2)
+      end
+
+      it "is findable by old slugs" do
+        post = Post.create(title: "foo title")
+        old_friendly_id = post.friendly_id
+        post.title = post.title + " 2"
+        post.slug = nil
+        post.save!
+        expect(Post.friendly.find(old_friendly_id)).to eq(post)
+        expect(Post.friendly.exists?(old_friendly_id))
+      end
+
+      it "creates slug records on each change" do
+        post = Post.create! title: "hello"
+        expect(FriendlyId::Slug.count).to eq(1)
+        post = Post.friendly.find("hello")
+        post.title = "hello again"
+        post.slug = nil
+        post.save!
+        expect(FriendlyId::Slug.count).to eq(2)
+      end
+    end
+
+    describe "translations" do
+      it "stores locale on slugs" do
+        expect {
+          Post.create(title: "Foo Title")
+        }.to change(FriendlyId::Slug, :count).by(1)
+        post = Post.first
+        slug = post.slugs.first
+
+        aggregate_failures do
+          expect(slug.slug).to eq("foo-title")
+          expect(slug.locale).to eq("en")
+        end
+
+        expect {
+          Mobility.with_locale(:fr) do
+            post.title = "Foo Titre"
+            post.save!
+          end
+        }.to change(FriendlyId::Slug, :count).by(1)
+
+        slug = post.slugs.find { |slug| slug.locale == "fr" }
+        expect(slug.slug).to eq("foo-titre")
+      end
+
+      it "finds slug in current locale" do
+        Mobility.with_locale(:'pt-BR') do
+          post = Post.create!(title: "Foo Title")
+          post.title = "New Title"
+          post.slug = nil
+          post.save!
+        end
+
+        Mobility.with_locale(:de) do
+          post = Post.create!(title: "Foo Title")
+          post.title = "New Title"
+          post.slug = nil
+          post.save!
+        end
+
+        expect { Post.friendly.find("new-title") }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Post.friendly.find("foo-title") }.to raise_error(ActiveRecord::RecordNotFound)
+
+        Mobility.with_locale(:'pt-BR') do
+          expect(Post.friendly.find("foo-title")).to eq(Post.first)
+          expect(Post.friendly.find("new-title")).to eq(Post.first)
+        end
+
+        Mobility.with_locale(:de) do
+          expect(Post.friendly.find("foo-title")).to eq(Post.last)
+          expect(Post.friendly.find("new-title")).to eq(Post.last)
+        end
+      end
+    end
+  end
 end
