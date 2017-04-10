@@ -138,6 +138,29 @@ Article.friendly.find("mon-titre-foo")
 #=> #<Article id: 1 ...>
 ```
 
+### Slug History
+
+To use the FriendlyId history module, use `use: [:history, :mobility]` when
+calling `friendly_id` from your model:
+
+```ruby
+class Article < ActiveRecord::Base
+  include Mobility
+  translates :slug, :title, dirty: true
+
+  extend FriendlyId
+  friendly_id :title, use: [:history, :mobility]
+end
+```
+
+It is important to have `:history` *before* `:mobility` here, since the
+Mobility module looks for the presence of the history module and only adds
+necessary overrides if history has been enabled (so the reverse order will not
+work).
+
+To use the history feature, you must add a `locale` column to your
+`friendly_id_slugs` table.
+
 Contributing
 ------------
 
