@@ -124,6 +124,8 @@ describe FriendlyId::Mobility do
   end
 
   describe "history" do
+    # Check that normal history functions are working, both with and without locale
+    # column on the slugs table.
     describe "base features" do
       it "inserts record in slugs table on create" do
         post = Post.create!(title: "foo title", content: "once upon a time...")
@@ -166,7 +168,7 @@ describe FriendlyId::Mobility do
       end
     end
 
-    describe "translations" do
+    describe "translations", :locale_slugs do
       it "stores locale on slugs" do
         expect {
           Post.create(title: "Foo Title")

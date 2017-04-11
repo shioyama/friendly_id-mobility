@@ -48,7 +48,7 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration
       t.string   :slug,                      null: false
       t.integer  :sluggable_id,              null: false
       t.string   :sluggable_type, limit: 50
-      t.string   :locale,                    null: false
+      t.string   :locale,                    null: false if ENV['SLUG_LOCALE_COLUMN'] == 'true'
       t.string   :scope
       t.datetime :created_at
     end
@@ -95,4 +95,6 @@ RSpec.configure do |config|
   config.after :each do
     DatabaseCleaner.clean
   end
+
+  config.filter_run_excluding :locale_slugs unless ENV['SLUG_LOCALE_COLUMN'] == 'true'
 end

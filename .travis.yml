@@ -3,3 +3,6 @@ language: ruby
 rvm:
   - 2.2.5
 before_install: gem install bundler -v 1.12.5
+env:
+  - SLUG_LOCALE_COLUMN=true
+  - SLUG_LOCALE_COLUMN=false
