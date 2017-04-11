@@ -159,7 +159,13 @@ necessary overrides if history has been enabled (so the reverse order will not
 work).
 
 To use the history feature, you must add a `locale` column to your
-`friendly_id_slugs` table.
+`friendly_id_slugs` table, which you can do with the `friendly_id_mobility` generator:
+
+```
+rails generate friendly_id_mobility
+```
+
+Then run the generated migration with `rake db:migrate`.
 
 Contributing
 ------------
