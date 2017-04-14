@@ -31,18 +31,22 @@ Or install it yourself as:
 gem install friendly_id-mobility
 ```
 
-Run the Mobility generator and migrate:
+Run the Mobility generator:
 
 ```
 rails generate mobility:install
+```
+
+Run the FriendlyId generator:
+
+```
+rails generate friendly_id
+```
+
+And migrate to generate Mobility and FriendlyId tables:
+
+```
 rake db:migrate
-```
-
-Run the FriendlyId generator, without the migration to generate the slugs
-table:
-
-```
-rails generate friendly_id --skip-migration
 ```
 
 You're ready to go!
