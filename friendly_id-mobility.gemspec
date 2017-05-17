@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.files        = Dir['{lib/**/*,[A-Z]*}']
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'mobility',    '~> 0.1.12'
+  spec.add_dependency 'mobility',    '~> 0.1.13'
   spec.add_dependency 'friendly_id', '>= 5.0.0', '<= 5.3.0'
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"

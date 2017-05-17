@@ -19,7 +19,7 @@ module FriendlyId
 
         mod = Module.new do
           def friendly
-            super.i18n
+            super.send(::Mobility.query_method)
           end
         end
         model_class.send :extend, mod
