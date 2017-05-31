@@ -104,6 +104,12 @@ describe FriendlyId::Mobility do
           end
         end
       end
+
+      it "works with normal finds" do
+        john = Journalist.create!(name: "John Smith")
+
+        expect(Journalist.friendly.find(john.id)).to eq(john)
+      end
     end
   end
 
