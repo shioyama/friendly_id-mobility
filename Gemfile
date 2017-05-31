@@ -8,6 +8,8 @@ group :development, :test do
 
   gem 'sqlite3'
 
+  gem 'rails', '>= 5.0', '< 5.1'
+
   gem 'pry'
   gem 'pry-byebug'
 end
