@@ -18,7 +18,7 @@ describe FriendlyIdMobilityGenerator, type: :generator do
       directory "db" do
         directory "migrate" do
           migration "add_locale_to_friendly_id_slugs" do
-            contains "class AddLocaleToFriendlyIdSlugs < ActiveRecord::Migration[5.0]"
+            contains "class AddLocaleToFriendlyIdSlugs < ActiveRecord::Migration[#{ENV['RAILS_VERSION']}]"
             contains "def change"
             contains "add_column :friendly_id_slugs, :locale, :string, null: :false, after: :scope"
             contains "remove_index :friendly_id_slugs, [:slug, :sluggable_type]"

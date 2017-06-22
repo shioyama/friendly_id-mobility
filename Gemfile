@@ -8,7 +8,11 @@ group :development, :test do
 
   gem 'sqlite3'
 
-  gem 'rails', '>= 5.0', '< 5.1'
+  if ENV['RAILS_VERSION'] == '5.1'
+    gem 'rails', '>= 5.1', '< 5.2'
+  else
+    gem 'rails', '>= 5.0', '< 5.1'
+  end
 
   gem 'pry'
   gem 'pry-byebug'

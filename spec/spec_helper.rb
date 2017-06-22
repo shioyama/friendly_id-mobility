@@ -12,7 +12,9 @@ DatabaseCleaner.strategy = :transaction
 
 I18n.enforce_available_locales = false
 
-class FriendlyIdMobilityTest < ActiveRecord::Migration
+ENV['RAILS_VERSION'] ||= "5.1"
+
+class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f]
   def self.up
     create_table :journalists do |t|
       t.string  :name
