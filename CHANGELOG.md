@@ -2,6 +2,9 @@
 
 ## 0.3
 
+### 0.3.1
+* Use `Mobility.query_method` instead of hard-coding `i18n` scope.
+
 ### 0.3.0
 * Add support for history module ([#2](https://github.com/shioyama/friendly_id-mobility/pull/2))
 
