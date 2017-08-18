@@ -67,7 +67,7 @@ table named `name`):
 
 ```ruby
 class Journalist < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug
 
   extend FriendlyId
@@ -96,7 +96,7 @@ You can also translate both slug and base attribute:
 
 ```ruby
 class Article < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug, :title, dirty: true
 
   extend FriendlyId
@@ -149,7 +149,7 @@ calling `friendly_id` from your model:
 
 ```ruby
 class Article < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug, :title, dirty: true
 
   extend FriendlyId

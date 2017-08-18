@@ -58,7 +58,7 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
 end
 
 class Journalist < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug, type: :string, fallthrough_accessors: true, backend: :key_value
 
   extend FriendlyId
@@ -66,7 +66,7 @@ class Journalist < ActiveRecord::Base
 end
 
 class Article < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug, :title, type: :string, dirty: true, backend: :key_value
 
   extend FriendlyId
@@ -74,7 +74,7 @@ class Article < ActiveRecord::Base
 end
 
 class Post < ActiveRecord::Base
-  include Mobility
+  extend Mobility
   translates :slug, :title, type: :string, dirty: true, backend: :key_value
   translates :content, type: :text, dirty: true, backend: :key_value
 
