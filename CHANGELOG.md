@@ -1,5 +1,10 @@
 # FriendlyId Mobility Changelog
 
+## 0.4
+
+### 0.4.0
+* Update Mobility dependency to 0.2.x
+
 ## 0.3
 
 ### 0.3.1
