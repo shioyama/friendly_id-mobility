@@ -62,8 +62,8 @@ and with a translated base column.
 
 If you only want to translate the slug, include `Mobility` and translate the
 slug with whichever backend you want (here we're assuming the default KeyValue
-backend). Here, `name` is untranslated (so there is a column on the `posts`
-table named `name`):
+backend). Here, `name` is untranslated (so there is a column on the
+`journalists` table named `name`):
 
 ```ruby
 class Journalist < ActiveRecord::Base
