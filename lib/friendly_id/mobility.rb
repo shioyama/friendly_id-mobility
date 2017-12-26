@@ -12,6 +12,10 @@ module FriendlyId
             friendly_id_config.finder_methods = FriendlyId::Mobility::FinderMethods
           end
         end
+        if model_class.friendly_id_config.uses? :finders
+          warn "[FriendlyId] The Mobility add-on is not compatible with the Finders add-on. " \
+            "Please remove one or the other from the #{model_class} model."
+        end
       end
 
       def included(model_class)

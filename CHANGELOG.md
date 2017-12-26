@@ -2,6 +2,9 @@
 
 ## 0.5
 
+### 0.5.2
+* Emit warning when mobility is enabled with finders add-on
+
 ### 0.5.1
 * Update Mobility dependency to >= 0.3, < 0.4
 
