@@ -142,6 +142,10 @@ Article.friendly.find("mon-titre-foo")
 #=> #<Article id: 1 ...>
 ```
 
+Note that this gem is not compatible with the `finders` add-on; using both
+together will lead to unexpected results. To use these finder methods, you will
+have to remove `finders` and explicitly call `friendly.find`, as above.
+
 ### Slug History
 
 To use the FriendlyId history module, use `use: [:history, :mobility]` when
