@@ -16,7 +16,7 @@ Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'friendly_id-mobility', '~> 0.5.2'
+gem 'friendly_id-mobility', '~> 0.5.3'
 ```
 
 And then execute:

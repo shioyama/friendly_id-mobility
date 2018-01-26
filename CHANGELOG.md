@@ -2,6 +2,9 @@
 
 ## 0.5
 
+### 0.5.3
+* Update gemspec to allow all Mobility versions < 1.0
+
 ### 0.5.2
 * Emit warning when mobility is enabled with finders add-on
 
