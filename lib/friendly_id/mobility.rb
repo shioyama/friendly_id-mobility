@@ -49,18 +49,16 @@ module FriendlyId
       send(friendly_id_config.slug_column).nil?
     end
 
-    include(Module.new do
-      def set_slug(normalized_slug = nil)
-        super
-        changed.each do |change|
-          if change =~ /\A#{friendly_id_config.base}_([a-z]{2}(_[a-z]{2})?)/
-            locale, suffix = $1.split('_'.freeze)
-            locale = "#{locale}-#{suffix.upcase}".freeze if suffix
-            ::Mobility.with_locale(locale) { super }
-          end
+    def set_slug(normalized_slug = nil)
+      super
+      changed.each do |change|
+        if change =~ /\A#{friendly_id_config.base}_([a-z]{2}(_[a-z]{2})?)/
+          locale, suffix = $1.split('_'.freeze)
+          locale = "#{locale}-#{suffix.upcase}".freeze if suffix
+          ::Mobility.with_locale(locale) { super }
         end
       end
-    end)
+    end
 
     module FinderMethods
       include ::FriendlyId::History::FinderMethods
