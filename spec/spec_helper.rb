@@ -28,6 +28,17 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
       t.boolean :published
     end
 
+    create_table :novels do |t|
+      t.integer :novelist_id
+      t.integer :publisher_id
+    end
+
+    create_table :novelists do |t|
+    end
+
+    create_table :publishers do |t|
+    end
+
     create_table :mobility_string_translations do |t|
       t.string  :locale
       t.string  :key
@@ -80,6 +91,35 @@ class Post < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :title, use: [:history, :mobility]
+end
+
+class Novelist < ActiveRecord::Base
+  extend Mobility
+  translates :slug, :name, type: :string, dirty: true, backend: :key_value
+
+  extend FriendlyId
+  friendly_id :name, use: [:mobility, :slugged]
+end
+
+class Novel < ActiveRecord::Base
+  extend Mobility
+  translates :slug, :name, type: :string, dirty: true, backend: :key_value
+
+  extend FriendlyId
+  belongs_to :novelist
+  belongs_to :publisher
+  friendly_id :name, use: [:mobility, :scoped], scope: [:publisher, :novelist]
+
+  def should_generate_new_friendly_id?
+    new_record? || super
+  end
+end
+
+class Publisher < ActiveRecord::Base
+  extend Mobility
+  translates :name, type: :string, dirty: true, backend: :key_value
+
+  has_many :novels
 end
 
 ActiveRecord::Migration.verbose = false
