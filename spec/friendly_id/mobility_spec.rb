@@ -228,4 +228,61 @@ describe FriendlyId::Mobility do
       end
     end
   end
+
+  describe "scoped" do
+    # Check that normal scoped functions are working, both with and without locale
+    # column on the slugs table.
+    describe "base features" do
+      it "detects scope column from belongs_to relation" do
+        expect(Novel.friendly_id_config.scope_columns).to eq(["publisher_id", "novelist_id"])
+      end
+
+      it "detects scope column from explicit column name" do
+        model_class = Class.new(ActiveRecord::Base) do
+          extend Mobility
+          translates :slug, :empty, type: :string, dirty: true, backend: :key_value
+
+          self.abstract_class = true
+          extend FriendlyId
+          friendly_id :empty, use: [:scoped, :mobility], scope: :dummy
+        end
+
+        expect(model_class.friendly_id_config.scope_columns).to eq(["dummy"])
+      end
+
+      it "allows duplicate slugs outside scope" do
+        novel1 = Novel.create! name: "a", novelist: Novelist.create!(name: "a")
+        novel2 = Novel.create! name: "a", novelist: Novelist.create!(name: "b")
+        expect(novel1.friendly_id).to eq(novel2.friendly_id)
+      end
+
+      it "does not allow duplicate slugs inside scope" do
+        novelist = Novelist.create!(name: "a")
+        novel1 = Novel.create! name: "a", novelist: novelist
+        novel2 = Novel.create! name: "a", novelist: novelist
+        expect(novel1.friendly_id).not_to eq(novel2.friendly_id)
+      end
+
+      it "applies scope with multiple columns" do
+        novelist = Novelist.create! name: "a"
+        publisher = Publisher.create! name: "b"
+        novel1 = Novel.create! name: "c", novelist: novelist, publisher: publisher
+        novel2 = Novel.create! name: "c", novelist: novelist, publisher: Publisher.create(name: "d")
+        novel3 = Novel.create! name: "c", novelist: Novelist.create(name: "e"), publisher: publisher
+        novel4 = Novel.create! name: "c", novelist: novelist, publisher: publisher
+        expect(novel1.friendly_id).to eq(novel2.friendly_id)
+        expect(novel2.friendly_id).to eq(novel3.friendly_id)
+        expect(novel3.friendly_id).not_to eq(novel4.friendly_id)
+      end
+      
+      it "allows a record to reuse its own slug" do
+        record = Novel.create!(name: "a")
+        old_id = record.friendly_id
+        record.slug = nil
+        record.save!
+
+        expect(record.friendly_id).to eq(old_id)
+      end
+    end
+  end
 end
