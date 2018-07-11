@@ -24,6 +24,9 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
     create_table :articles do |t|
     end
 
+    create_table :comments do |t|
+    end
+
     create_table :posts do |t|
       t.boolean :published
     end
@@ -91,6 +94,14 @@ class Post < ActiveRecord::Base
 
   extend FriendlyId
   friendly_id :title, use: [:history, :mobility]
+end
+
+class Comment < ActiveRecord::Base
+  extend Mobility
+  translates :slug, :title, backend: :key_value, locale_accessors: [:fr, :es, :en, :pt], dirty: true, fallbacks: { en: [:en, :fr], es: [:es, :fr], pt: [:pt, :es, :fr] }
+
+  extend FriendlyId
+  friendly_id :title, use: :mobility
 end
 
 class Novelist < ActiveRecord::Base

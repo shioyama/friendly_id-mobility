@@ -92,7 +92,7 @@ describe FriendlyId::Mobility do
         john = Journalist.create!(name: "John Smith")
         juan = I18n.with_locale(:es) { Journalist.create!(name: "Juan Fulano") }
 
-        aggregate_failures do 
+        aggregate_failures do
           expect(Journalist.friendly.find("john-smith")).to eq(john)
           expect {
             Journalist.friendly.find("juan-fulano")
@@ -125,6 +125,28 @@ describe FriendlyId::Mobility do
           I18n.with_locale(:'es-MX') { expect(article.friendly_id).to eq("guerra-y-paz") }
           I18n.with_locale(:en) { expect(article.friendly_id).to eq("war-and-peace") }
         end
+      end
+    end
+
+    describe "#should_generate_new_friendly_id" do
+      before do
+        I18n.config.available_locales  = [:fr, :en, :es, :pt]
+        I18n.enforce_available_locales = true
+        I18n.default_locale            = :fr
+      end
+
+      after do
+        I18n.enforce_available_locales = false
+      end
+
+      it "should take care of current locale" do
+        comment = Comment.new(title_fr: 'Titre français', title_es: 'Título español', title_en: 'English title')
+        comment.save
+
+        expect(comment.slug_fr).to eq 'titre-francais'
+        expect(comment.slug_es).to eq 'titulo-espanol'
+        expect(comment.slug_en).to eq 'english-title'
+        expect(comment.slug_pt).to be nil
       end
     end
   end
