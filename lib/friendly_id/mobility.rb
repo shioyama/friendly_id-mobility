@@ -52,7 +52,7 @@ module FriendlyId
     def set_slug(normalized_slug = nil)
       super
       changed.each do |change|
-        if change =~ /\A#{friendly_id_config.base}_([a-z]{2}(_[a-z]{2})?)/
+        if change =~ /\A(?:#{friendly_id_config.base}|#{friendly_id_config.slug_column})_([a-z]{2}(_[a-z]{2})?)/
           locale, suffix = $1.split('_'.freeze)
           locale = "#{locale}-#{suffix.upcase}".freeze if suffix
           ::Mobility.with_locale(locale) { super }
