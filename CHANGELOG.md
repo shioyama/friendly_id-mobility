@@ -2,6 +2,10 @@
 
 ## 0.5
 
+### 0.5.4
+* Generate all translated slugs when model is saved
+  ([#12](https://github.com/shioyama/friendly_id-mobility/pull/12))
+
 ### 0.5.3
 * Update gemspec to allow all Mobility versions < 1.0
 
