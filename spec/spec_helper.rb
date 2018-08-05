@@ -78,7 +78,7 @@ end
 
 class Article < ActiveRecord::Base
   extend Mobility
-  translates :slug, :title, type: :string, dirty: true, backend: :key_value
+  translates :slug, :title, type: :string, dirty: true, backend: :key_value, fallbacks: { en: [:es] }
 
   extend FriendlyId
   friendly_id :title, use: :mobility

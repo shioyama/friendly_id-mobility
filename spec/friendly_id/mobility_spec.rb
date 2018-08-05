@@ -130,7 +130,15 @@ describe FriendlyId::Mobility do
 
     describe "#set_friendly_id" do
       # Ref: https://github.com/shioyama/friendly_id-mobility/issues/10
-      it "regenerates slug records for all locales with present values" do
+      it "generates slug records for all locales with present values" do
+        article = Article.new(title_en: "English title", title_es: "Título español")
+        article.save
+
+        expect(article.slug_en).to eq("english-title")
+        expect(article.slug_es).to eq("titulo-espanol")
+      end
+
+      it "regenerates slug records for all locales with present values when reset" do
         article = Article.new(title_en: "English title", title_es: "Título español")
         article.save
 

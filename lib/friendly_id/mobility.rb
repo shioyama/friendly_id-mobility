@@ -46,7 +46,7 @@ module FriendlyId
     end
 
     def should_generate_new_friendly_id?
-      send(friendly_id_config.slug_column).nil?
+      send(friendly_id_config.slug_column, locale: ::Mobility.locale).nil?
     end
 
     def set_slug(normalized_slug = nil)
