@@ -73,7 +73,7 @@ class Journalist < ActiveRecord::Base
   translates :slug
 
   extend FriendlyId
-  friendly_id :title, use: :mobility
+  friendly_id :name, use: :mobility
 end
 ```
 
