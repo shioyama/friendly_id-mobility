@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mobility',    '>= 0.5.1', '< 1.0'
   spec.add_dependency 'friendly_id', '>= 5.0.0', '<= 5.3.0'
   spec.add_development_dependency "bundler", "~> 2.0.2"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", ">= 12.3.3"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "database_cleaner", '~> 1.5', '>= 1.5.3'
   spec.add_development_dependency "generator_spec", '~> 0.9.3'
