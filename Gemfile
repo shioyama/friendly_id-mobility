@@ -6,7 +6,7 @@ gemspec
 group :development, :test do
   gem 'rake'
 
-  if ENV['RAILS_VERSION'] < '5.2'
+  if ENV['RAILS_VERSION'] && ENV['RAILS_VERSION'] < '5.2'
     gem 'sqlite3', '~> 1.3.13'
   else
     gem 'sqlite3'
