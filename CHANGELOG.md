@@ -2,6 +2,10 @@
 
 ## 0.5
 
+### 0.5.5
+* Bump friendly_id dependency version to 5.4.0
+  ([#19](https://github.com/shioyama/friendly_id-mobility/pull/19/files))
+
 ### 0.5.4
 * Generate all translated slugs when model is saved
   ([#12](https://github.com/shioyama/friendly_id-mobility/pull/12))
