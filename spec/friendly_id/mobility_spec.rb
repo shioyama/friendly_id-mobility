@@ -114,6 +114,25 @@ describe FriendlyId::Mobility do
   end
 
   context "base column is translated" do
+    before do
+      klass = Class.new(ActiveRecord::Base)
+
+      # Add dirty plugin for this class, needed for these tests
+      translations_class = Class.new(Mobility.translations_class)
+      translations_class.plugins do
+        dirty
+      end
+
+      klass.class_eval do
+        self.table_name = :articles
+        include translations_class.new(:slug, :title, type: :string, fallbacks: { en: [:es] })
+
+        extend FriendlyId
+        friendly_id :title, use: :mobility
+      end
+      stub_const('Article', klass)
+    end
+
     describe "#friendly_id" do
       it "sets friendly_id from base column in each locale" do
         article = Article.create!(:title => "War and Peace")
@@ -263,7 +282,7 @@ describe FriendlyId::Mobility do
       it "detects scope column from explicit column name" do
         model_class = Class.new(ActiveRecord::Base) do
           extend Mobility
-          translates :slug, :empty, type: :string, dirty: true, backend: :key_value
+          translates :slug, :empty, type: :string
 
           self.abstract_class = true
           extend FriendlyId

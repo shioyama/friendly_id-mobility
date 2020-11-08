@@ -68,26 +68,31 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
   end
 end
 
+# Base plugins
+Mobility.configure do
+  plugins do
+    backend :key_value
+    active_record
+    reader
+    writer
+    query
+    fallbacks
+    fallthrough_accessors
+  end
+end
+
 class Journalist < ActiveRecord::Base
   extend Mobility
-  translates :slug, type: :string, fallthrough_accessors: true, backend: :key_value
+  translates :slug, type: :string
 
   extend FriendlyId
   friendly_id :name, use: :mobility
 end
 
-class Article < ActiveRecord::Base
-  extend Mobility
-  translates :slug, :title, type: :string, dirty: true, backend: :key_value, fallbacks: { en: [:es] }
-
-  extend FriendlyId
-  friendly_id :title, use: :mobility
-end
-
 class Post < ActiveRecord::Base
   extend Mobility
-  translates :slug, :title, type: :string, dirty: true, backend: :key_value
-  translates :content, type: :text, dirty: true, backend: :key_value
+  translates :slug, :title, type: :string
+  translates :content, type: :text
 
   extend FriendlyId
   friendly_id :title, use: [:history, :mobility]
@@ -95,7 +100,7 @@ end
 
 class Novelist < ActiveRecord::Base
   extend Mobility
-  translates :slug, :name, type: :string, dirty: true, backend: :key_value
+  translates :slug, :name, type: :string
 
   extend FriendlyId
   friendly_id :name, use: [:mobility, :slugged]
@@ -103,7 +108,7 @@ end
 
 class Novel < ActiveRecord::Base
   extend Mobility
-  translates :slug, :name, type: :string, dirty: true, backend: :key_value
+  translates :slug, :name, type: :string
 
   extend FriendlyId
   belongs_to :novelist
@@ -117,7 +122,7 @@ end
 
 class Publisher < ActiveRecord::Base
   extend Mobility
-  translates :name, type: :string, dirty: true, backend: :key_value
+  translates :name, type: :string
 
   has_many :novels
 end

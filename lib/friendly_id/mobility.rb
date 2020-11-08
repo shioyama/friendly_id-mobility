@@ -23,7 +23,8 @@ module FriendlyId
 
         mod = Module.new do
           def friendly
-            super.send(::Mobility.query_method)
+            # TODO: Make this constant public in Mobility 1.1 so we don't need const_get
+            super.extending(::Mobility::Plugins::ActiveRecord::Query.const_get(:QueryExtension))
           end
         end
         model_class.send :extend, mod
@@ -31,7 +32,7 @@ module FriendlyId
 
       def advise_against_untranslated_model(model)
         field = model.friendly_id_config.query_field
-        if !model.respond_to?(:translated_attribute_names) || model.translated_attribute_names.exclude?(field)
+        if model.included_modules.grep(::Mobility::Translations).empty? || model.mobility_attributes.exclude?(field)
           raise "[FriendlyId] You need to translate the '#{field}' field with " \
             "Mobility (add 'translates :#{field}' in your model '#{model.name}')"
         end
