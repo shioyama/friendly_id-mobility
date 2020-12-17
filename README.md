@@ -27,19 +27,27 @@ And then execute:
 bundle
 ```
 
-Or install it yourself as:
-
-```
-gem install friendly_id-mobility
-```
-
-Run the Mobility generator:
+Then run the Mobility generator:
 
 ```
 rails generate mobility:install
 ```
 
-Run the FriendlyId generator:
+This will generate an initializer for Mobility. To ensure that FriendlyId sees
+changes correctly on attributes, enable (uncomment) the `dirty` plugin line in
+your Mobility configuration:
+
+```ruby
+Mobility.configure do
+  plugins do
+    # ...
+	dirty
+    # ...
+  end
+end
+```
+
+Next, run the FriendlyId generator:
 
 ```
 rails generate friendly_id
@@ -99,7 +107,7 @@ You can also translate both slug and base attribute:
 ```ruby
 class Article < ActiveRecord::Base
   extend Mobility
-  translates :slug, :title, dirty: true
+  translates :slug, :title
 
   extend FriendlyId
   friendly_id :title, use: :mobility
@@ -124,10 +132,6 @@ Mobility.locale = :en
 article.slug
 #=> "my-foo-title"
 ```
-
-Setting `dirty: true` on the translated base attribute is recommended in order
-to ensure that changes in any locale trigger updates to the slug in that
-locale.
 
 ### Friendly Finders with Translated Attributes
 
@@ -156,7 +160,7 @@ calling `friendly_id` from your model:
 ```ruby
 class Article < ActiveRecord::Base
   extend Mobility
-  translates :slug, :title, dirty: true
+  translates :slug, :title
 
   extend FriendlyId
   friendly_id :title, use: [:history, :mobility]
