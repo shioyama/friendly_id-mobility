@@ -12,13 +12,7 @@ group :development, :test do
     gem 'sqlite3'
   end
 
-  if ENV['RAILS_VERSION'] == '5.1'
-    gem 'rails', '>= 5.1', '< 5.2'
-  elsif ENV['RAILS_VERSION'] == '5.0'
-    gem 'rails', '>= 5.0', '< 5.1'
-  else
-    gem 'rails', '>= 5.2.0.rc2', '< 5.3'
-  end
+  gem 'rails', "~> #{ENV['RAILS_VERSION'] || '6.0'}.0"
 
   gem 'pry'
   gem 'pry-byebug'
