@@ -2,11 +2,11 @@ FriendlyId Mobility
 ===================
 
 [![Gem Version](https://badge.fury.io/rb/friendly_id-mobility.svg)][gem]
-[![Build Status](https://travis-ci.org/shioyama/friendly_id-mobility.svg?branch=master)][travis]
+[![Build Status](https://github.com/shioyama/friendly_id-mobility/workflows/CI/badge.svg)][actions]
 [![Code Climate](https://api.codeclimate.com/v1/badges/1dad5895b69b4ae5bd38/maintainability.svg)][codeclimate]
 
 [gem]: https://rubygems.org/gems/friendly_id-mobility
-[travis]: https://travis-ci.org/shioyama/friendly_id-mobility
+[actions]: https://github.com/shioyama/friendly_id-mobility/actions
 [codeclimate]: https://codeclimate.com/github/shioyama/friendly_id-mobility
 
 [Mobility](https://github.com/shioyama/mobility) support for
