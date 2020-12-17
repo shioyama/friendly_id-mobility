@@ -2,6 +2,10 @@
 
 ## 1.0
 
+### 1.0.1
+
+* Update friendly_id dependency ([#21](https://github.com/shioyama/friendly_id-mobility/pull/21))
+
 ### 1.0.0
 
 * Release 1.0.0, compatible with Mobility 1.0
