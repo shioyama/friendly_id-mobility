@@ -23,8 +23,7 @@ module FriendlyId
 
         mod = Module.new do
           def friendly
-            # TODO: Make this constant public in Mobility 1.1 so we don't need const_get
-            super.extending(::Mobility::Plugins::ActiveRecord::Query.const_get(:QueryExtension))
+            super.extending(::Mobility::Plugins::ActiveRecord::Query::QueryExtension)
           end
         end
         model_class.send :extend, mod
