@@ -41,7 +41,7 @@ your Mobility configuration:
 Mobility.configure do
   plugins do
     # ...
-	dirty
+    dirty
     # ...
   end
 end
