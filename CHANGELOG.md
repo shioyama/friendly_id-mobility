@@ -2,6 +2,11 @@
 
 ## 1.0
 
+### 1.0.2
+
+* Depend on Mobility 1.0.1 to avoid need for `const_get`
+  ([#25](https://github.com/shioyama/friendly_id-mobility/pull/25/files))
+
 ### 1.0.1
 
 * Update friendly_id dependency ([#21](https://github.com/shioyama/friendly_id-mobility/pull/21))
