@@ -168,6 +168,18 @@ describe FriendlyId::Mobility do
         expect(article.slug_en).to eq("english-title")
         expect(article.slug_es).to eq("titulo-espanol")
       end
+
+      # Regression: https://github.com/shioyama/friendly_id-mobility/pull/26
+      it "ignores changes to other columns" do
+        I18n.enforce_available_locales = true
+        application = double(:application)
+        allow(application).to receive_message_chain(:config, :i18n, :available_locales).and_return([:en, :ja])
+        expect(Rails).to receive(:application).at_least(1).time.and_return(application)
+        article = Article.new(title_en: "English title", title_translations: "foo")
+        expect { article.save }.not_to raise_error
+      ensure
+        I18n.enforce_available_locales = false
+      end
     end
   end
 

@@ -22,6 +22,7 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
     end
 
     create_table :articles do |t|
+      t.string :title_translations
     end
 
     create_table :posts do |t|
