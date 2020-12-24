@@ -2,6 +2,11 @@
 
 ## 1.0
 
+### 1.0.3
+* Ensure regex does not trigger on changes unrelated to translated attributes
+  ([#26](https://github.com/shioyama/friendly_id-mobility/pull/26)) thanks
+  [kevynlebouille](https://github.com/kevynlebouille)!
+
 ### 1.0.2
 
 * Depend on Mobility 1.0.1 to avoid need for `const_get`
