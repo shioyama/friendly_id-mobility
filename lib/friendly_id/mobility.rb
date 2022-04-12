@@ -31,7 +31,7 @@ module FriendlyId
 
       def advise_against_untranslated_model(model)
         field = model.friendly_id_config.query_field
-        if model.included_modules.grep(::Mobility::Translations).empty? || model.mobility_attributes.exclude?(field)
+        if model.included_modules.grep(::Mobility::Translations).empty? || model.mobility_attributes.exclude?(field.to_s)
           raise "[FriendlyId] You need to translate the '#{field}' field with " \
             "Mobility (add 'translates :#{field}' in your model '#{model.name}')"
         end
