@@ -30,7 +30,7 @@ module FriendlyId
       end
 
       def advise_against_untranslated_model(model)
-        field = model.friendly_id_config.query_field
+        field = model.friendly_id_config.query_field.to_s
         if model.included_modules.grep(::Mobility::Translations).empty? || model.mobility_attributes.exclude?(field)
           raise "[FriendlyId] You need to translate the '#{field}' field with " \
             "Mobility (add 'translates :#{field}' in your model '#{model.name}')"
@@ -46,7 +46,7 @@ module FriendlyId
     end
 
     def should_generate_new_friendly_id?
-      send(friendly_id_config.slug_column, locale: ::Mobility.locale).nil?
+      send(friendly_id_config.slug_column, locale: ::Mobility.locale).nil? && !send(friendly_id_config.base).nil?
     end
 
     def set_slug(normalized_slug = nil)
