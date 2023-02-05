@@ -2,6 +2,12 @@
 
 ## 1.0
 
+### 1.0.4
+* Convert field from symbol to string value when comparing with
+  `mobility_attributes`
+  ([#29](https://github.com/shioyama/friendly_id-mobility/pull/29)) thanks
+  [mrbrdo](https://github.com/mrbrdo)
+
 ### 1.0.3
 * Ensure regex does not trigger on changes unrelated to translated attributes
   ([#26](https://github.com/shioyama/friendly_id-mobility/pull/26)) thanks
