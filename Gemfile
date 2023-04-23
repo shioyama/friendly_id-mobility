@@ -12,7 +12,7 @@ group :development, :test do
     gem 'sqlite3'
   end
 
-  gem 'rails', "~> #{ENV['RAILS_VERSION'] || '6.0'}.0"
+  gem 'rails', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
 
   gem 'pry'
   gem 'pry-byebug'
