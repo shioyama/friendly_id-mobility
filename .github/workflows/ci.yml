@@ -22,6 +22,7 @@ jobs:
           - '5.2'
           - '6.0'
           - '6.1'
+          - '7.0'
     env:
       BUNDLE_JOBS: 4
       BUNDLE_PATH: vendor/bundle
