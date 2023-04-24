@@ -1,6 +1,6 @@
 class AddLocaleToFriendlyIdSlugs < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
   def change
-    add_column :friendly_id_slugs, :locale, :string, null: :false, after: :scope
+    add_column :friendly_id_slugs, :locale, :string, null: :true, after: :scope
 
     remove_index :friendly_id_slugs, [:slug, :sluggable_type]
     add_index :friendly_id_slugs, [:slug, :sluggable_type, :locale], length: { slug: 140, sluggable_type: 50, locale: 2 }

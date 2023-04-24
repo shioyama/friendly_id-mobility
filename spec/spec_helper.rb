@@ -40,6 +40,12 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
     create_table :publishers do |t|
     end
 
+    create_table :products do |t|
+      t.string :name
+      t.string :slug
+      t.string :description
+    end
+
     create_table :mobility_string_translations do |t|
       t.string  :locale
       t.string  :key
@@ -62,7 +68,7 @@ class FriendlyIdMobilityTest < ActiveRecord::Migration[ENV['RAILS_VERSION'].to_f
       t.string   :slug,                      null: false
       t.integer  :sluggable_id,              null: false
       t.string   :sluggable_type, limit: 50
-      t.string   :locale,                    null: false if ENV['SLUG_LOCALE_COLUMN'] == 'true'
+      t.string   :locale                                if ENV['SLUG_LOCALE_COLUMN'] == 'true'
       t.string   :scope
       t.datetime :created_at
     end
@@ -126,6 +132,14 @@ class Publisher < ActiveRecord::Base
   translates :name, type: :string
 
   has_many :novels
+end
+
+class Product < ActiveRecord::Base
+  extend Mobility
+  translates :description, type: :string
+
+  extend FriendlyId
+  friendly_id :name, use: [:slugged, :history]
 end
 
 ActiveRecord::Migration.verbose = false

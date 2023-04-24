@@ -281,6 +281,66 @@ describe FriendlyId::Mobility do
         end
       end
     end
+
+    describe "non-translated", :locale_slugs do
+      it "stores no locale on slugs" do
+        expect {
+          Product.create(name: "Foo Title")
+        }.to change(FriendlyId::Slug, :count).by(1)
+        product = Product.first
+        slug = product.slugs.first
+
+        aggregate_failures do
+          expect(slug.slug).to eq("foo-title")
+          expect(slug.locale).to eq(nil)
+        end
+
+        expect {
+          Mobility.with_locale(:fr) do
+            product.name = "Foo Titre"
+            product.save!
+          end
+        }.not_to change(FriendlyId::Slug.unscoped, :count)
+      end
+
+      it "finds slug ignoring current locale" do
+        Mobility.with_locale(:'pt-BR') do
+          product = Product.create!(name: "Foo Title")
+          product.name = "New Title"
+          product.slug = nil
+          product.save!
+        end
+
+        second_product_slugs = nil
+
+        Mobility.with_locale(:de) do
+          product = Product.create!(name: "Foo Title")
+          product.name = "New Title"
+          product.slug = nil
+          product.save!
+          second_product_slugs = product.slugs.pluck(:slug)
+        end
+
+        expect { Product.friendly.find("new-title") }.not_to raise_error
+        expect { Product.friendly.find("foo-title") }.not_to raise_error
+
+        Mobility.with_locale(:'pt-BR') do
+          expect(Product.friendly.find("foo-title")).to eq(Product.first)
+          expect(Product.friendly.find("new-title")).to eq(Product.first)
+
+          expect(Product.friendly.find(second_product_slugs.first)).to eq(Product.second)
+          expect(Product.friendly.find(second_product_slugs.second)).to eq(Product.second)
+        end
+
+        Mobility.with_locale(:de) do
+          expect(Product.friendly.find("foo-title")).to eq(Product.first)
+          expect(Product.friendly.find("new-title")).to eq(Product.first)
+
+          expect(Product.friendly.find(second_product_slugs.first)).to eq(Product.second)
+          expect(Product.friendly.find(second_product_slugs.second)).to eq(Product.second)
+        end
+      end
+    end
   end
 
   describe "scoped" do
