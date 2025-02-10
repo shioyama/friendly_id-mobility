@@ -2,6 +2,9 @@
 
 ## 1.0
 
+### 1.0.5
+* Update CI matrix to be inline with mobility
+
 ### 1.0.4
 * Convert field from symbol to string value when comparing with
   `mobility_attributes`
