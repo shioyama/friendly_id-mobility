@@ -39,7 +39,7 @@ jobs:
         run: sudo apt-get install libsqlite3-dev -y
         if: matrix.database == 'sqlite3'
       - id: cache-bundler
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/bundle
           key: ${{ matrix.ruby }}-${{ matrix.rails }}-${{ hashFiles('friendly_id-mobility.gemspec') }}-${{ hashFiles('Gemfile') }}
