@@ -4,6 +4,8 @@
 
 ### 1.0.5
 * Update CI matrix to be inline with mobility
+* Remove Ruby 3.1, Rails 7.0/7.1 from CI matrix
+* Fix unsupported/explicit after: :scope in migration
 
 ### 1.0.4
 * Convert field from symbol to string value when comparing with
