@@ -4,13 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
-  gem 'rake'
-
-  if ENV['RAILS_VERSION'] && ENV['RAILS_VERSION'] < '5.2'
-    gem 'sqlite3', '~> 1.3.13'
-  else
-    gem 'sqlite3'
-  end
+  gem 'sqlite3'
 
   gem 'rails', "~> #{ENV['RAILS_VERSION'] || '7.0'}.0"
 
